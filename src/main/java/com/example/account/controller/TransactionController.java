@@ -12,12 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-/**
- * 잔액 관련 컨트롤러
- * 1. 잔액 사용
- * 2. 잔액 사용 취소
- * 3. 거래 확인
- */
 @RestController
 @Slf4j
 @RequiredArgsConstructor

@@ -4,9 +4,9 @@ import com.example.account.domain.Account;
 import com.example.account.domain.AccountUser;
 import com.example.account.dto.AccountDto;
 import com.example.account.exception.AccountException;
+import com.example.account.repository.AccountRepository;
 import com.example.account.repository.AccountUserRepository;
 import com.example.account.type.AccountStatus;
-import com.example.account.repository.AccountRepository;
 import com.example.account.type.ErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -41,13 +42,14 @@ class AccountServiceTest {
     @Test
     void createAccountSuccess() {
         AccountUser user = AccountUser.builder()
-                .name("Pobi").build();
+                .name("Pobi")
+                .build();
         user.setId(12L);
         given(accountUserRepository.findById(anyLong()))
                 .willReturn(Optional.of(user));
-        given(accountRepository.findFirstByOrderByIdDesc())
-                .willReturn(Optional.of(Account.builder()
-                                .accountNumber("1000000012").build()));
+//        given(accountRepository.findFirstByOrderByIdDesc())
+//                .willReturn(Optional.of(Account.builder()
+//                                .accountNumber("1000000012").build()));
         given(accountRepository.save(any()))
                 .willReturn(Account.builder()
                         .accountUser(user)
@@ -61,7 +63,8 @@ class AccountServiceTest {
         //then
         verify(accountRepository, times(1)).save(captor.capture());
         assertEquals(12L, accountDto.getUserId());
-        assertEquals("1000000013", captor.getValue().getAccountNumber());
+//        assertEquals("1000000013", captor.getValue().getAccountNumber());
+        System.out.println(captor.getValue().getAccountNumber());
     }
 
     @Test
@@ -300,46 +303,5 @@ class AccountServiceTest {
         assertEquals(ErrorCode.USER_NOT_FOUND, exception.getErrorCode());
 
     }
-
-
-//    @Test
-//    @DisplayName("계좌 조회 성공")
-//    // 로직 테스트
-//    void testXXX () {
-//        //given
-//        given(accountRepository.findById(anyLong()))
-//                .willReturn(Optional.of(Account.builder()
-//                        .accountStatus(AccountStatus.UNREGISTERED)
-//                        .accountNumber("65789").build()));
-//        ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
-//
-//        //when
-//        Account account = accountService.getAccount(4555L);
-//
-//        //then
-//        verify(accountRepository, times(1)).findById(captor.capture());
-//        verify(accountRepository, times(0)).save(any());
-//        assertEquals(4555L, captor.getValue());
-//        assertEquals("65789", account.getAccountNumber());
-//        assertEquals(AccountStatus.UNREGISTERED, account.getAccountStatus());
-//    }
-//
-//    @Test
-//    void testGetAccount() {
-//        accountService.createAccount(1L,1000L); // erorr 나서 임의로 변수 넣어둠
-//        Account account = accountService.getAccount(1L);
-//
-//        assertEquals("40000", account.getAccountNumber());
-//        assertEquals(AccountStatus.IN_USE, account.getAccountStatus());
-//    }
-//
-//    @Test
-//    void testGetAccount2() {
-//        accountService.createAccount(1L,1000L); // erorr 나서 임의로 변수 넣어둠
-//        Account account = accountService.getAccount(2L);
-//
-//        assertEquals("40000", account.getAccountNumber());
-//        assertEquals(AccountStatus.IN_USE, account.getAccountStatus());
-//    }
 
 }

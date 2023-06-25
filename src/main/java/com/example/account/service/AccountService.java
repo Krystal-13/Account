@@ -3,6 +3,7 @@ package com.example.account.service;
  package com.example.account.service
  : 비즈니스 로직을 담는 서비스 클래스 패키지
 */
+
 import com.example.account.domain.Account;
 import com.example.account.domain.AccountUser;
 import com.example.account.dto.AccountDto;
@@ -15,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -67,7 +67,8 @@ public class AccountService {
             randomNumber.append(random.nextInt(9));
         }
 
-        Optional<Account> account = accountRepository.findByAccountNumber(randomNumber.toString());
+        Optional<Account> account =
+                accountRepository.findByAccountNumber(randomNumber.toString());
 
         if (account.isPresent()) {
             return randomAccountNumber();
